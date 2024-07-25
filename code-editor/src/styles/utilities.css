@@ -1,0 +1,50 @@
+.flex{
+    display: flex;
+}
+
+.row{
+    flex-direction: row;
+}
+
+.column{
+    flex-direction: column;
+}
+
+.center{
+    justify-content: center;
+    align-items: center;
+}
+
+.rounded{
+    border-radius: 20px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.grow{
+    flex-grow: 1;
+}
+
+.wrap{
+    flex-wrap: 1;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.full-height{
+    height: 100%;
+}
+
+.page{
+    background-color:#ebeaff;
+    width: 100vw;
+    height: 100vh;
+}
