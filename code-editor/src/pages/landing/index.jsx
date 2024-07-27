@@ -2,22 +2,12 @@
 
 import React from 'react';
 import './style.css';
+import Navbar from '../../components/Navbar';
 
 const LandingPage = () => {
   return (
     <div className="landing-page">
-      <div className="landing-header">
-        <nav className="navbar">
-          <div className="logo">Logo</div>
-          <ul className="nav-links">
-            <li><a href="#code-editor">Code Editor</a></li>
-            <li><a href="#chat">Chat</a></li>
-            <li><a href="#profile">Profile</a></li>
-            <li><a href="#sourcecode">Source Code</a></li>
-            <li><a href="/login" className="login-btn">Login</a></li>
-          </ul>
-        </nav>
-      </div>
+      <Navbar />
       <section id="features" className="features-section">
         <h2>Features</h2>
         <div className="features">

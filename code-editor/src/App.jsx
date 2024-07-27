@@ -9,8 +9,7 @@ import LandingPage from './pages/landing/index.jsx';
 
 const App = ()=>{
     return(
-        <div className="flex column center">
-        <BrowserRouter>
+      <BrowserRouter>
         <Routes>
           <Route path={routes.login} element={<LoginSignup />} />
             <Route path='/socials' element={<Socials />} />
@@ -18,7 +17,6 @@ const App = ()=>{
           <Route path="/*" element={<h3>Not Found</h3>} />
         </Routes>
       </BrowserRouter>
-    </div>
     )
 }
 export default App;
