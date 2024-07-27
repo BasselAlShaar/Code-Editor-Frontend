@@ -50,7 +50,7 @@ const SignInForm = () => {
         toggleEmptyFieldsPopup();
       }
       else {
-      const URL = 'http://localhost/React-PHP-Recipe-App/recipe-app/Backend/public/api/login';
+      const URL = 'http://127.0.0.1:8000/api/login';
       const response = await fetch(URL, {
         method: 'POST', 
         headers: {
@@ -64,11 +64,12 @@ const SignInForm = () => {
 
       const data = await response.json();
       console.log(data);
+      //console.log(data.authorisation.token);
       if(data.message==="Invalid email or password."){
         togglePopup();
       }
-      else if(data.message==="Login successful."){
-        localStorage.setItem("userID",data.userID);
+      else if(data.status==="success"){
+        localStorage.setItem("user-token",data.authorisation.token);
         nav('/home');
       }
     
@@ -86,8 +87,8 @@ const SignInForm = () => {
         <a href="#">Forgot your password?</a>
         <Button text='Sign in' onClick={handleLogin}></Button>
         {emailFlag && <p>Invalid Email</p>}
-        {isPopupVisible && <Popup message='Wrong email or password' onClose={()=>{setIsPopupVisible(false)}}></Popup>}
-        {isEmptyFieldsPopup && <Popup message='Can not have empty fields' onClose={()=>{setEmptyFieldsPopup(false)}}></Popup>}
+        {isPopupVisible && <Popup caution={'Careful!!'} message='Wrong email or password' onClose={()=>{setIsPopupVisible(false)}}></Popup>}
+        {isEmptyFieldsPopup && <Popup caution={'Careful!!'} message='Can not have empty fields' onClose={()=>{setEmptyFieldsPopup(false)}}></Popup>}
       </form>
     </div>
   );
