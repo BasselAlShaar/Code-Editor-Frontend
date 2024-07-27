@@ -1,0 +1,123 @@
+/* src/LandingPage.css */
+
+body {
+    margin: 0;
+    display: block;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.landing-page {
+    text-align: center;
+}
+
+.landing-header {
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    padding: 20px;
+    color: #fff;
+    top: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.login-btn {
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #4facfe;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.header-content {
+    margin-top: 50px;
+}
+
+.header-content h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.header-content p {
+    font-size: 24px;
+    margin-bottom: 40px;
+}
+
+.signup-btn {
+
+    padding: 15px 30px;
+    color: #fff;
+    background-color: #4facfe;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.signup-btn:hover{
+    background-color: #248eeb;
+}
+
+.features-section {
+    padding: 50px 20px;
+    background: #fff;
+    color: #333;
+}
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.feature {
+    background: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.developers-section,
+.contact-section {
+    padding: 50px 20px;
+    background: #f0f2f5;
+}
+
+.landing-footer {
+    background: #4facfe;
+    padding: 10px 20px;
+    color: #fff;
+}
+
+.landing-footer p {
+    margin: 0;
+}
