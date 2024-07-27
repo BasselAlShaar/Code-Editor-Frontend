@@ -1,9 +1,9 @@
 import React from 'react';
 import LoginSignup from './pages/Login-Signup'
-
+import CodePage from './pages/CodePage';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { routes } from "./utils/routes.jsx";
-import Socials from './components/Socials';
+
 
 
 const App = ()=>{
@@ -12,7 +12,7 @@ const App = ()=>{
         <BrowserRouter>
         <Routes>
           <Route path={routes.login} element={<LoginSignup />} />
-          <Route path='/socials' element={<Socials />} />
+          <Route path={routes.code}  element={<CodePage/>} />
           <Route path="/*" element={<h3>Not Found</h3>} />
         </Routes>
       </BrowserRouter>
