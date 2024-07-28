@@ -5,9 +5,9 @@ import LanguageSelector from "../LanguageSelector";
 import { CODE_SNIPPETS } from "../../pages/CodePage/constants";
 import Output from "../Output";
 import Button from "../../base/Button";
-import Input from "../../base/Input"
-import Popup from "../../base/Popup"
-import FileSaver from 'file-saver';
+import Input from "../../base/Input";
+import Popup from "../../base/Popup";
+import FileSaver from "file-saver";
 
 const CodeEditor = () => {
   const editorRef = useRef();
@@ -15,10 +15,9 @@ const CodeEditor = () => {
   const [language, setLanguage] = useState("javascript");
   const [savedCodes, setSavedCodes] = useState([]);
   const [selectedCode, setSelectedCode] = useState("");
-
-  const [codeTitle,setCodeTitle]= useState("");
-
+  const [codeTitle, setCodeTitle] = useState("");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const togglePopup = () => {
     setIsPopupVisible(!isPopupVisible);
@@ -34,84 +33,77 @@ const CodeEditor = () => {
     setValue(CODE_SNIPPETS[language]);
   };
 
-
-
   const saveHandler = async () => {
-    const token = localStorage.getItem('user-token');
-    const userId = localStorage.getItem('user-id');
-    
-    console.log('Token:', token);
-    console.log('User ID:', userId);
+    const token = localStorage.getItem("user-token");
+    const userId = localStorage.getItem("user-id");
 
     try {
-        console.log(codeTitle);
-        const response = await fetch(`http://127.0.0.1:8000/api/user/${userId}/code`, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                content: value,
-                title: codeTitle,
-                user_id: userId,
-            })
-        });
-        
-
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-            const errorText = await response.text();
-            throw new Error(`Unexpected response: ${errorText}`);
-        }
-
-        const data = await response.json();
-
-        if (response.ok) {
-            console.log(data);
-            togglePopup();
-        } else {
-            console.error("Error saving code:", data);
-        }
-    } catch (error) {
-        console.error("Error saving code:", error.message);
-    }
-};
-
-  
-  
-  
-    
-  
-  const displayHandler = async () => {
-    try {
-      const response = await fetch("/api/getSavedCodes", {
-        method: "GET",
+      const response = await fetch(`http://127.0.0.1:8000/api/user/${userId}/code`, {
+        method: "POST",
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem('user-token')}`
-        }
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          content: value,
+          title: codeTitle,
+          user_id: userId,
+        }),
       });
-  
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const errorText = await response.text();
+        throw new Error(`Unexpected response: ${errorText}`);
+      }
+
+      const data = await response.json();
+
       if (response.ok) {
-        const data = await response.json();
-        setSavedCodes(data);
+        setSavedCodes((prev) => [...prev, data.code]);
+        togglePopup();
+        setIsSaved(!isSaved);
+        window.location.reload();
       } else {
-        console.error("Error fetching saved codes:", response.statusText);
+        console.error("Error saving code:", data);
       }
     } catch (error) {
-      console.error("Error fetching saved codes:", error);
+      console.error("Error saving code:", error.message);
     }
   };
-  
 
-  const handleCodeSelection = (event) => {
-    const selectedCode = savedCodes.find(
-      (code) => code.id === event.target.value
-    );
-    setValue(selectedCode.code);
-    setSelectedCode(event.target.value);
-  };
+  useEffect(() => {
+  }, [isSaved]);
+
+  useEffect(() => {
+    const fetchSavedCodes = async () => {
+      try {
+        const token = localStorage.getItem("user-token");
+        const userId = localStorage.getItem("user-id");
+        const response = await fetch(`http://127.0.0.1:8000/api/user/${userId}/codes`, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setSavedCodes(data.codes);
+        } else {
+          console.error("Error fetching saved codes:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching saved codes:", error);
+      }
+    };
+
+    fetchSavedCodes();
+  }, []);
+
 
   const downloadHandler = () => {
     const blob = new Blob([value], { type: "text/plain;charset=utf-8" });
@@ -123,29 +115,20 @@ const CodeEditor = () => {
       case "python":
         extension = "py";
         break;
-        case "java":
+      case "java":
         extension = "java";
         break;
-        case "csharp":
+      case "csharp":
         extension = "cs";
         break;
-        case "php":
+      case "php":
         extension = "php";
         break;
       default:
         extension = "txt";
     }
-    FileSaver.saveAs(blob, `code.${extension}`);
+    FileSaver.saveAs(blob, `${codeTitle}.${extension}`);
   };
-
-  useEffect(() => {
-    if (selectedCode) {
-      const selected = savedCodes.find((code) => code.id === selectedCode);
-      if (selected) {
-        setValue(selected.code);
-      }
-    }
-  }, [selectedCode, savedCodes]);
 
   return (
     <Box width={"97.8vw"}>
@@ -163,9 +146,8 @@ const CodeEditor = () => {
             width="55vw"
             theme="vs-dark"
             language={language}
-            defaultValue={CODE_SNIPPETS[language]}
+            value={selectedCode || value}
             onMount={onMount}
-            value={value}
             onChange={(value) => setValue(value)}
           />
         </Box>
@@ -179,23 +161,22 @@ const CodeEditor = () => {
         spacing={20}
       >
         <div className="flex row gap wrap">
-          <Input placeHolder={'Code Name'} onTextChange={(e)=>{setCodeTitle(e.target.value)}}></Input>
-          <Button text="Save" onClick={saveHandler}></Button>
-          {isPopupVisible && <Popup caution={'Thanks'} message='Code Saved' onClose={()=>{setIsPopupVisible(false)}}></Popup>}
+          <Input placeHolder={"Code Name"} onTextChange={(e) => setCodeTitle(e.target.value)} />
+          <Button text="Save" onClick={saveHandler} />
+          {isPopupVisible && <Popup caution={"Thanks!"} message="Code Saved" onClose={() => setIsPopupVisible(false)} />}
         </div>
-       
-       <div className="flex row wrap align-items">
-            <Select bgColor='#ff4b2b' textColor={'#fff'} placeholder="Select saved code" onChange={handleCodeSelection}>
+
+        <div className="flex row wrap align-items">
+          <Select bgColor="#ff4b2b" textColor="#fff" placeholder="Select saved code" onChange={(e)=>{setSelectedCode(e.target.value)}}>
             {savedCodes.map((code) => (
-              <option key={code.id} value={code.id}>
-                {code.name} {/* Assuming each code has a name property */}
+              <option key={code.id} value={code.content}>
+                {code.title}
               </option>
             ))}
-          </Select> 
-          <Button text="Display Code" onClick={displayHandler}></Button>
-       </div>
+          </Select>
+        </div>
 
-        <Button text="Download" onClick={downloadHandler}></Button>
+        <Button text="Download" onClick={downloadHandler} />
       </HStack>
     </Box>
   );
