@@ -6,12 +6,20 @@
     flex-direction: row;
 }
 
+.gap{
+    gap: 10px;
+}
+
 .column{
     flex-direction: column;
 }
 
 .center{
     justify-content: center;
+    align-items: center;
+}
+
+.align-items{
     align-items: center;
 }
 

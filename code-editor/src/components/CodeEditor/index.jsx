@@ -5,7 +5,8 @@ import LanguageSelector from "../LanguageSelector";
 import { CODE_SNIPPETS } from "../../pages/CodePage/constants";
 import Output from "../Output";
 import Button from "../../base/Button";
-import axios from "axios";
+import Input from "../../base/Input"
+import Popup from "../../base/Popup"
 import FileSaver from 'file-saver';
 
 const CodeEditor = () => {
@@ -15,7 +16,13 @@ const CodeEditor = () => {
   const [savedCodes, setSavedCodes] = useState([]);
   const [selectedCode, setSelectedCode] = useState("");
 
-  const token = localStorage.getItem("jwtToken");
+  const [codeTitle,setCodeTitle]= useState("");
+
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const togglePopup = () => {
+    setIsPopupVisible(!isPopupVisible);
+  };
 
   const onMount = (editor) => {
     editorRef.current = editor;
@@ -27,35 +34,76 @@ const CodeEditor = () => {
     setValue(CODE_SNIPPETS[language]);
   };
 
-  const saveHandler = async () => {
-    try {
-      const response = await axios.post(
-        "/api/saveCode",
-        { code: value, language },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('user-token')}`,
-          },
-        }
-      );
-      alert("Code saved successfully!");
-    } catch (error) {
-      console.error("Error saving code:", error);
-    }
-  };
 
-  const browseHandler = async () => {
+
+  const saveHandler = async () => {
+    const token = localStorage.getItem('user-token');
+    const userId = localStorage.getItem('user-id');
+    
+    console.log('Token:', token);
+    console.log('User ID:', userId);
+
     try {
-      const response = await axios.get("/api/getSavedCodes", {
+        console.log(codeTitle);
+        const response = await fetch(`http://127.0.0.1:8000/api/user/${userId}/code`, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                content: value,
+                title: codeTitle,
+                user_id: userId,
+            })
+        });
+        
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            const errorText = await response.text();
+            throw new Error(`Unexpected response: ${errorText}`);
+        }
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log(data);
+            togglePopup();
+        } else {
+            console.error("Error saving code:", data);
+        }
+    } catch (error) {
+        console.error("Error saving code:", error.message);
+    }
+};
+
+  
+  
+  
+    
+  
+  const displayHandler = async () => {
+    try {
+      const response = await fetch("/api/getSavedCodes", {
+        method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('user-token')}`,
-        },
+          "Authorization": `Bearer ${localStorage.getItem('user-token')}`
+        }
       });
-      setSavedCodes(response.data);
+  
+      if (response.ok) {
+        const data = await response.json();
+        setSavedCodes(data);
+      } else {
+        console.error("Error fetching saved codes:", response.statusText);
+      }
     } catch (error) {
       console.error("Error fetching saved codes:", error);
     }
   };
+  
 
   const handleCodeSelection = (event) => {
     const selectedCode = savedCodes.find(
@@ -130,15 +178,23 @@ const CodeEditor = () => {
         pb="20px"
         spacing={20}
       >
-        <Button text="Save" onClick={saveHandler}></Button>
-        <Button text="Browse" onClick={browseHandler}></Button>
-        <Select placeholder="Select saved code" onChange={handleCodeSelection}>
-          {savedCodes.map((code) => (
-            <option key={code.id} value={code.id}>
-              {code.name} {/* Assuming each code has a name property */}
-            </option>
-          ))}
-        </Select>
+        <div className="flex row gap wrap">
+          <Input placeHolder={'Code Name'} onTextChange={(e)=>{setCodeTitle(e.target.value)}}></Input>
+          <Button text="Save" onClick={saveHandler}></Button>
+          {isPopupVisible && <Popup caution={'Thanks'} message='Code Saved' onClose={()=>{setIsPopupVisible(false)}}></Popup>}
+        </div>
+       
+       <div className="flex row wrap align-items">
+            <Select bgColor='#ff4b2b' textColor={'#fff'} placeholder="Select saved code" onChange={handleCodeSelection}>
+            {savedCodes.map((code) => (
+              <option key={code.id} value={code.id}>
+                {code.name} {/* Assuming each code has a name property */}
+              </option>
+            ))}
+          </Select> 
+          <Button text="Display Code" onClick={displayHandler}></Button>
+       </div>
+
         <Button text="Download" onClick={downloadHandler}></Button>
       </HStack>
     </Box>
