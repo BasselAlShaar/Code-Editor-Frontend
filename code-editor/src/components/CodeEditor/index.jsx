@@ -6,7 +6,7 @@ import { CODE_SNIPPETS } from "../../pages/CodePage/constants";
 import Output from "../Output";
 import Button from "../../base/Button";
 import axios from "axios";
-import FileSaver from 'file-saver';
+import FileSaver from "file-saver";
 
 const CodeEditor = () => {
   const editorRef = useRef();
@@ -34,7 +34,7 @@ const CodeEditor = () => {
         { code: value, language },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('user-token')}`,
+            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
           },
         }
       );
@@ -48,7 +48,7 @@ const CodeEditor = () => {
     try {
       const response = await axios.get("/api/getSavedCodes", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('user-token')}`,
+          Authorization: `Bearer ${localStorage.getItem("user-token")}`,
         },
       });
       setSavedCodes(response.data);
@@ -75,13 +75,13 @@ const CodeEditor = () => {
       case "python":
         extension = "py";
         break;
-        case "java":
+      case "java":
         extension = "java";
         break;
-        case "csharp":
+      case "csharp":
         extension = "cs";
         break;
-        case "php":
+      case "php":
         extension = "php";
         break;
       default:
