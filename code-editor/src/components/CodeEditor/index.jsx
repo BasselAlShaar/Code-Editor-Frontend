@@ -12,7 +12,7 @@ import FileSaver from "file-saver";
 const CodeEditor = () => {
   const editorRef = useRef();
   const [value, setValue] = useState("");
-  const [language, setLanguage] = useState("javascript");
+  const [language, setLanguage] = useState("python");
   const [savedCodes, setSavedCodes] = useState([]);
   const [selectedCode, setSelectedCode] = useState("");
   const [codeTitle, setCodeTitle] = useState("");
@@ -63,7 +63,7 @@ const CodeEditor = () => {
       if (response.ok) {
         setSavedCodes((prev) => [...prev, data.code]);
         togglePopup();
-        setIsSaved(!isSaved);
+        //setIsSaved(!isSaved);
         window.location.reload();
       } else {
         console.error("Error saving code:", data);
@@ -74,6 +74,7 @@ const CodeEditor = () => {
   };
 
   useEffect(() => {
+    
   }, [isSaved]);
 
   useEffect(() => {

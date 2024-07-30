@@ -57,7 +57,8 @@ const SignUpForm = ()=> {
     const response = await fetch(URL, {
       method: 'POST', // Specify the method
       headers: {
-        'Content-Type': 'application/json', // Specify the content type
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name:name,
