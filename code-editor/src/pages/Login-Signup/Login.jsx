@@ -38,11 +38,12 @@ const SignInForm = () => {
     setEmailFlag(email !== '' && !validateEmail(email));
   }, [email]);
 
+  /* 
   const validatePassword = () => {
     // Minimum 8 characters, at least one letter, one number and one special character
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     return passwordRegex.test(password);
-  };
+  };*/
 
   const handleLogin = async (e)=>{
       e.preventDefault();
@@ -70,9 +71,9 @@ const SignInForm = () => {
       }
       else if(data.status==="success"){
         localStorage.setItem("user-token",data.authorisation.token);
+        localStorage.setItem("user-id",data.user.id);
         nav('/home');
       }
-    
     }
   }
 

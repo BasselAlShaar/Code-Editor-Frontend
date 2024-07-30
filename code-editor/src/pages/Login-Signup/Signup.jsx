@@ -54,22 +54,23 @@ const SignUpForm = () => {
     e.preventDefault();
     if (email === "" || name === "" || password1 === "" || password2 === "") {
       toggleEmptyFieldsPopup();
-    } else {
-      const URL =
-        "http://localhost:8000/api/register";
-      const response = await fetch(URL, {
-        method: "POST", // Specify the method
-        headers: {
-          "Content-Type": "application/json", // Specify the content type
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password1,
-        }),
-      });
-      const data = await response.json();
-      if (data.message === "User created!") {
+    }
+    else {
+    const URL = 'http://127.0.0.1:8000/api/register';
+    const response = await fetch(URL, {
+      method: 'POST', // Specify the method
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name:name,
+        email: email,
+        password: password1,
+      }),
+    });
+    const data = await response.json();
+      if(data.message==="User created successfully"){
         console.log("created");
         togglePopup();
       }
