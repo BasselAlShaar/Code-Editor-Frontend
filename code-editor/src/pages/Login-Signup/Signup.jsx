@@ -80,10 +80,10 @@ const SignUpForm = ()=> {
         <h1>Crate Account</h1>
         <Socials></Socials>
         <span>or use your email for registration</span>
-        <Input placeHolder='Name' type='text' onTextChange={(e) => {setName(e.target.value)}}></Input>
-        <Input placeHolder='Email' type='text' onTextChange={(e) => {setEmail(e.target.value)}}></Input>
-        <Input placeHolder='Password' type='password' onTextChange={(e) => {setPassword1(e.target.value)}}></Input>
-        <Input placeHolder='Cofirm Password' type='password' onTextChange={(e) => {setPassword2(e.target.value)}}></Input>
+        <Input className='login-input' placeHolder='Name' type='text' onTextChange={(e) => {setName(e.target.value)}}></Input>
+        <Input className='login-input' placeHolder='Email' type='text' onTextChange={(e) => {setEmail(e.target.value)}}></Input>
+        <Input className='login-input' placeHolder='Password' type='password' onTextChange={(e) => {setPassword1(e.target.value)}}></Input>
+        <Input className='login-input' placeHolder='Cofirm Password' type='password' onTextChange={(e) => {setPassword2(e.target.value)}}></Input>
         {passwordMatchFlag && <p>Passwords do not match</p>}
         <Button text='Sign in' onClick={handelSignup}></Button>
         {emailFlag && <p>Invalid Email</p>}

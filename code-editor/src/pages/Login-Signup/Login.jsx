@@ -81,8 +81,8 @@ const SignInForm = () => {
         <h1>Sign in</h1>
         <Socials></Socials>
         <span>or use your account</span>
-        <Input placeHolder='Email' type='text' onTextChange={(e) => {setEmail(e.target.value)}}></Input>
-        <Input placeHolder='Password' type='password' onTextChange={(e)=>{setPassword(e.target.value)}}></Input>
+        <Input className='login-input' placeHolder='Email' type='text' onTextChange={(e) => {setEmail(e.target.value)}}></Input>
+        <Input className='login-input' placeHolder='Password' type='password' onTextChange={(e)=>{setPassword(e.target.value)}}></Input>
         <a href="#">Forgot your password?</a>
         <Button text='Sign in' onClick={handleLogin}></Button>
         {emailFlag && <p>Invalid Email</p>}

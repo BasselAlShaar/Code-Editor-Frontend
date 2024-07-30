@@ -3,6 +3,8 @@
 import React from 'react';
 import './style.css';
 import Navbar from '../../components/Navbar';
+import ContactUs from '../../components/ContactUs';
+import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
@@ -33,13 +35,14 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="header-content">
-          <a href="/signup" className="signup-btn">Get Started</a>
+          <Link to={"/login"} className='signup-btn'>Get Started</Link>
         </div>
       </section>
       <section id="developers" className="developers-section">
         <h2>Our Developers</h2>
         <p>Meet our talented and diverse developer community.</p>
       </section>
+      <ContactUs />
       <footer className="landing-footer">
         <p>&copy; 2024 All rights reserved.</p>
       </footer>

@@ -1,11 +1,11 @@
 .landing-header {
-    background: linear-gradient(to right, #4facfe, #00f2fe);
     padding: 20px;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
     color: #fff;
-    top: 0;
 }
 
 .navbar {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;

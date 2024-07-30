@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.Contact-Form {
+    background-color: #eee;
+    border-radius: 10px;
+    padding: 20px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.Contact-Email {
+  width: 300px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.Contact-Text {
+  width: 300px;
+  padding: 10px;
+  border-radius: 10px;
+  resize: none;
+  height: 200px;
+}
+.Contact-Button {
+  padding: 15px 30px;
+    color: #fff;
+    background-color: #4facfe;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    text-decoration: none;
+}
+.Contact-Button:hover{
+    background-color: #248eeb;
+}
+.Contact-Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+}

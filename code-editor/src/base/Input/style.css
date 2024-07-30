@@ -13,6 +13,7 @@ label{
   
   .my-input > input {
     border: 1px solid grey;
+    margin: 3px 0;
     padding: 2px 8px;
     font-size: 12px;
     height: 35px;
