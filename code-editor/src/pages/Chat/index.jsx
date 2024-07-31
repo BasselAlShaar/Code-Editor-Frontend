@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 import "./style.css";
-
+import { redirect, useNavigate} from "react-router-dom";
 const Chat = () => {
+
+  const navigate = useNavigate()
   const [chats, setChats] = useState([]);
   const [users, setUsers] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -15,6 +17,9 @@ const Chat = () => {
   const token = localStorage.getItem("user-token");
   let userId;
   let tokenError = false;
+
+
+  //const handleNoToken = () => { navigate('/login')}
 
   try {
     if (!token) {
@@ -156,9 +161,11 @@ const Chat = () => {
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (tokenError) {
-    return <div>Error: Invalid token. Please log in again.</div>;
-  }
+  useEffect(() => { 
+    if (tokenError) {
+      navigate('/login')
+    }
+  },[tokenError])
 
   return (
     <div className="chat-container">
