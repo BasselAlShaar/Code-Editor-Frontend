@@ -1,0 +1,60 @@
+.profile-container {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info,
+.profile-codes,
+.profile-change-password {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.profile-info h2,
+.profile-codes h2,
+.profile-change-password h2 {
+  margin-top: 0;
+}
+
+.profile-codes ul{
+  list-style: none;
+  padding: 0;
+}
+
+.profile-codes li{
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.profile-change-password label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.profile-change-password input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.profile-change-password button {
+  padding: 10px 20px;
+  background-color: #4facfe;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}

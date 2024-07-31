@@ -32,7 +32,7 @@ const Navbar = () => {
             <Link to="/chat">Chat</Link>
           </li>
           <li>
-            <Link to="/">Profile</Link>
+            <Link to="/profile">Profile</Link>
           </li>
           {isLoggedIn ? (
             <li>
