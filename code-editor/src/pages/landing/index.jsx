@@ -2,8 +2,8 @@
 
 import React from "react";
 import "./style.css";
-import Navbar from "../../components/Navbar";
-import ContactUs from "../../components/ContactUs";
+import Navbar from "../../components/NavBar";
+import ContactUs from "../../components/ContactUs"
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {
