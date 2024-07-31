@@ -5,7 +5,7 @@ import './style.css'
 function CodePage() {
   return (
     <Box
-      height="700px"
+      height="100vh"
       bg="#0f0a19"
       color="gray.500"
       px={6}

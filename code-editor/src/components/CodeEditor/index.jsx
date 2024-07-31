@@ -122,9 +122,9 @@ const CodeEditor = () => {
   };
 
   return (
-    <Box width={"97.8vw"}>
-      <HStack spacing={220} height={"600px"}>
-        <Box pl={"25px"} w="41vw">
+    <Box width={"99.1vw"} >
+      <HStack spacing={220} pb={'15px'} className="flex row">
+        <Box pl={"5px"} w="41vw">
           <LanguageSelector language={language} onSelect={onSelect} />
           <Editor
             options={{
@@ -134,7 +134,8 @@ const CodeEditor = () => {
               },
             }}
             height="75vh"
-            width="55vw"
+            //width="120%"
+            width={'55vw'}
             theme="vs-dark"
             language={language}
             value={selectedCode || value}
@@ -149,6 +150,7 @@ const CodeEditor = () => {
         flexDir={"row"}
         justifyContent={"space-between"}
         pb="20px"
+        pt={'5px'}
         spacing={20}
       >
         <div className="flex row gap wrap">
@@ -158,7 +160,7 @@ const CodeEditor = () => {
         </div>
 
         <div className="flex row wrap align-items">
-          <Select bgColor="#ff4b2b" textColor="#fff" placeholder="Select saved code" onChange={(e) => setSelectedCode(e.target.value)}>
+          <Select bgColor="#1872c0" textColor="#fff" placeholder="Select saved code" onChange={(e) => setSelectedCode(e.target.value)}>
             {savedCodes.map((code) => (
               <option key={code.id} value={code.content}>
                 {code.title}
