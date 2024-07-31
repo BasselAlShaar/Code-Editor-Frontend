@@ -1,10 +1,10 @@
 // src/LandingPage.js
 
-import React from 'react';
-import './style.css';
-import Navbar from '../../components/Navbar';
-import ContactUs from '../../components/ContactUs';
-import { Link } from 'react-router-dom';
+import React from "react";
+import "./style.css";
+import Navbar from "../../components/Navbar";
+import ContactUs from "../../components/ContactUs";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -35,7 +35,9 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="header-content">
-          <Link to={"/login"} className='signup-btn'>Get Started</Link>
+          <Link to={"/login"} className="signup-btn">
+            Get Started
+          </Link>
         </div>
       </section>
       <section id="developers" className="developers-section">
@@ -48,6 +50,6 @@ const LandingPage = () => {
       </footer>
     </div>
   );
-}
+};
 
 export default LandingPage;

@@ -71,7 +71,7 @@ const SignInForm = () => {
       }
       else if(data.status==="success"){
         localStorage.setItem("user-token",data.authorisation.token);
-        nav('/home');
+        nav('/');
       }
     }
   }
