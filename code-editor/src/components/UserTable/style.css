@@ -20,12 +20,12 @@
 
 .user-table button {
     padding: 5px 10px;
-    background-color: #f00;
     color: #fff;
     border: none;
     cursor: pointer;
+    background-color: #1872c0;
 }
 
 .user-table button:hover {
-    background-color: #d00;
+    background-color: #248eeb;
 }

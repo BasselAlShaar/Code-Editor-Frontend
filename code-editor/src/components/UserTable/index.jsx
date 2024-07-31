@@ -21,12 +21,12 @@ const UserTable = () => {
     }
   };
 
-  const deleteUser = async (email) => {
+  const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/users/${email}`, {
+      await axios.delete(`http://localhost:8000/api/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setUsers(users.filter((user) => user.email !== email));
+      setUsers(users.filter((user) => user.id !== id));
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -51,7 +51,7 @@ const UserTable = () => {
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                <button onClick={() => deleteUser(user.email)}>Delete</button>
+                <button onClick={() => deleteUser(user.id)}>Delete</button>
               </td>
             </tr>
           ))}

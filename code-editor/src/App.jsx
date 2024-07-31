@@ -6,6 +6,7 @@ import Chat from "./pages/Chat/index.jsx";
 import LandingPage from "./pages/landing";
 import CodePage from "./pages/CodePage"
 import Profile from "./pages/Profile/index.jsx";
+import Admin from "./pages/Admin/index.jsx";
 
 const App = () => {
   return (
