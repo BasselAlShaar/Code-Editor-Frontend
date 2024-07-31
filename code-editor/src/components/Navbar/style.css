@@ -25,6 +25,8 @@
 
 .nav-links li {
     display: inline;
+    justify-self: center;
+    align-self: center;
 }
 
 .nav-links a {

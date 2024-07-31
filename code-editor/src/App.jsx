@@ -3,7 +3,7 @@ import LoginSignup from "./pages/Login-Signup";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { routes } from "./utils/routes.jsx";
 import Chat from "./pages/Chat/index.jsx";
-import LandingPage from "./pages/Landing";
+import LandingPage from "./pages/landing";
 import CodePage from "./pages/CodePage"
 import Profile from "./pages/Profile/index.jsx";
 
