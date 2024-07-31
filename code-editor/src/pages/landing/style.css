@@ -15,7 +15,7 @@ body {
 .login-btn {
     padding: 10px 20px;
     color: #fff;
-    background-color: #4facfe;
+    background-color: #1872c0;
     border: none;
     border-radius: 5px;
     text-decoration: none;
@@ -39,7 +39,7 @@ body {
 
     padding: 15px 30px;
     color: #fff;
-    background-color: #4facfe;
+    background-color: #1872c0;
     border: none;
     border-radius: 5px;
     font-size: 18px;
@@ -47,7 +47,7 @@ body {
 }
 
 .signup-btn:hover{
-    background-color: #248eeb;
+    background-color: #1872c0;
 }
 
 .features-section {
@@ -78,7 +78,7 @@ body {
 }
 
 .landing-footer {
-    background: #4facfe;
+    background: #1872c0;
     padding: 10px 20px;
     color: #fff;
 }
