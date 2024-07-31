@@ -1,0 +1,25 @@
+.file-uploader {
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.file-uploader h2 {
+    margin-bottom: 20px;
+}
+
+.file-uploader input {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.file-uploader button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.file-uploader button:hover {
+    background-color: #0056b3;
+}
