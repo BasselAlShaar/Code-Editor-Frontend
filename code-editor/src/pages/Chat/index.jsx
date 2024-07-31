@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {jwtDecode} from "jwt-decode";
 import "./style.css";
 
 const Chat = () => {
@@ -8,13 +9,61 @@ const Chat = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [userId, setUserId] = useState(1); // Replace with the logged-in user's ID
-  const [token, setToken] = useState(localStorage.getItem("jwtToken")); // Retrieve token from local storage or state
+  const [showAllUsers, setShowAllUsers] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const token = localStorage.getItem("user-token");
+  let userId;
+  let tokenError = false;
+
+  try {
+    if (!token) {
+      throw new Error("No token found");
+    }
+    const decodedToken = jwtDecode(token);
+    userId = decodedToken.sub; // Assuming the user ID is in the 'sub' field of the JWT payload
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    tokenError = true;
+  }
 
   useEffect(() => {
-    // Fetch users when the component mounts
-    fetchUsers();
-  }, []);
+    if (!tokenError) {
+      fetchChats();
+    }
+  }, [tokenError]);
+
+  const fetchChats = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/messages", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const { sentMessages, receivedMessages } = response.data;
+
+      const chatUsers = [
+        ...new Set([
+          ...sentMessages.map((msg) => msg.receiver_id),
+          ...receivedMessages.map((msg) => msg.sender_id),
+        ]),
+      ];
+
+      const userResponses = await Promise.all(
+        chatUsers.map((id) =>
+          axios.get(`http://localhost:8000/api/users/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+        )
+      );
+      const chatUsersDetails = userResponses.map((res) => res.data.user);
+      setChats(chatUsersDetails);
+    } catch (error) {
+      console.error("Error fetching chats:", error);
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -31,14 +80,11 @@ const Chat = () => {
 
   const fetchMessages = async (chatId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/messages/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get("http://localhost:8000/api/messages", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const sentMessages = response.data.sentMessages.filter(
         (message) => message.receiver_id === chatId
       );
@@ -67,7 +113,7 @@ const Chat = () => {
     if (newMessage.trim()) {
       try {
         const response = await axios.post(
-          `http://localhost:8000/api/messages/${userId}`,
+          "http://localhost:8000/api/messages",
           {
             receiver_id: currentChat.id,
             message: newMessage,
@@ -86,10 +132,33 @@ const Chat = () => {
     }
   };
 
-  const handleNewChat = () => {
-    // Logic to show a list of users to start a new chat with
-    console.log(users);
+  const handleNewChat = async () => {
+    setShowAllUsers(true);
+    fetchUsers();
   };
+
+  const handleUserClick = (user) => {
+    setCurrentChat(user);
+    fetchMessages(user.id);
+    setShowAllUsers(false);
+
+    // Add the new user to the chats list if not already present
+    if (!chats.some((chat) => chat.id === user.id)) {
+      setChats((prevChats) => [...prevChats, user]);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (tokenError) {
+    return <div>Error: Invalid token. Please log in again.</div>;
+  }
 
   return (
     <div className="chat-container">
@@ -97,14 +166,28 @@ const Chat = () => {
         <button className="new-chat-btn" onClick={handleNewChat}>
           New Chat
         </button>
+        {showAllUsers && (
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="search-input"
+          />
+        )}
         <ul className="chat-list">
-          {users.map((user) => (
-            <li key={user.id} onClick={() => handleChatClick(user)}>
-              <div className="chat-name">{user.name}</div>
-              {/* Placeholder for last message, update if needed */}
-              <div className="chat-last-message">Last message here...</div>
-            </li>
-          ))}
+          {showAllUsers
+            ? filteredUsers.map((user) => (
+                <li key={user.id} onClick={() => handleUserClick(user)}>
+                  <div className="chat-name">{user.name}</div>
+                </li>
+              ))
+            : chats.map((chat) => (
+                <li key={chat.id} onClick={() => handleChatClick(chat)}>
+                  <div className="chat-name">{chat.name}</div>
+                  <div className="chat-last-message">Last message here...</div>
+                </li>
+              ))}
         </ul>
       </div>
       <div className="chat-main">
@@ -116,10 +199,10 @@ const Chat = () => {
                 <div
                   key={index}
                   className={`chat-message ${
-                    message.sender_id === userId ? "me" : "them"
+                    message.sender_id == userId ? "me" : "them"
                   }`}
                 >
-                  {message.message}
+                  <p>{message.message}</p>
                 </div>
               ))}
             </div>
