@@ -18,13 +18,15 @@
 
 .nav-links {
     list-style: none;
-    padding: 0;
+    padding: 0px 10px;
     display: flex;
     gap: 20px;
 }
 
 .nav-links li {
     display: inline;
+    justify-self: center;
+    align-self: center;
 }
 
 .nav-links a {
