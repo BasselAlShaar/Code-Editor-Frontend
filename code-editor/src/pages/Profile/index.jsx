@@ -109,8 +109,8 @@ const Profile = () => {
     try {
       if (!passwordMatchFlag) {
         await axios.put(
-          `http://localhost:8000/api/users/${userId}`,
-          { currentPassword, newPassword },
+          `http://localhost:8000/api/users/password`,
+          newPassword,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setCurrentPassword("");

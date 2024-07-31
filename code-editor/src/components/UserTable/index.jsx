@@ -12,7 +12,7 @@ const UserTable = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/users", {
+      const response = await axios.get("http://localhost:8000/api/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(response.data.users);
@@ -23,7 +23,7 @@ const UserTable = () => {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/users/${id}`, {
+      await axios.delete(`http://localhost:8000/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(users.filter((user) => user.id !== id));
