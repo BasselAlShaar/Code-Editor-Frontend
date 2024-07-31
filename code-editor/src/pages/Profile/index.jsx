@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import "./style.css";
 
 const Profile = () => {
@@ -12,12 +14,31 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [editing, setEditing] = useState(false);
+  const [passwordMatchFlag, setPasswordMatchFlag] = useState(true);
 
   const token = localStorage.getItem("user-token");
 
+  const navigate = useNavigate();
+
+  const matchPassword = (newPassword, confirmPassword) => {
+    return newPassword === confirmPassword;
+  };
+
   useEffect(() => {
-    fetchUserInfo();
-  }, []);
+    setPasswordMatchFlag(
+      newPassword !== "" &&
+        confirmPassword !== "" &&
+        !matchPassword(newPassword, confirmPassword)
+    );
+  }, [newPassword, confirmPassword]);
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.sub; // Assuming 'sub' contains the user ID
+      fetchUserInfo(userId);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (userInfo.id) {
@@ -26,11 +47,14 @@ const Profile = () => {
     }
   }, [userInfo.id]);
 
-  const fetchUserInfo = async () => {
+  const fetchUserInfo = async (userId) => {
     try {
-      const response = await axios.get("http://localhost:8000/api/user", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `http://localhost:8000/api/users/${userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setUserInfo(response.data.user);
       setNewName(response.data.user.name);
       setNewEmail(response.data.user.email);
@@ -64,9 +88,11 @@ const Profile = () => {
   };
 
   const handleEdit = async () => {
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.sub;
     try {
       await axios.put(
-        "http://localhost:8000/api/user",
+        `http://localhost:8000/api/users/${userId}`,
         { name: newName, email: newEmail },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -78,24 +104,30 @@ const Profile = () => {
   };
 
   const handleChangePassword = async () => {
-    if (newPassword !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.sub;
     try {
-      await axios.put(
-        "http://localhost:8000/api/user/change-password",
-        { currentPassword, newPassword },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-      alert("Password changed successfully!");
+      if (!passwordMatchFlag) {
+        await axios.put(
+          `http://localhost:8000/api/users/${userId}`,
+          { currentPassword, newPassword },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      }
+      else { 
+        console.log("no match")
+      }
     } catch (error) {
       console.error("Error changing password:", error);
-      alert("Error changing password.");
     }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("user-token");
+    navigate("/login");
   };
 
   return (
@@ -104,7 +136,7 @@ const Profile = () => {
       <div className="profile-info">
         <h2>User Information</h2>
         {editing ? (
-          <div>
+          <div className="profile-info-inputs">
             <label>Name:</label>
             <input
               type="text"
@@ -117,14 +149,22 @@ const Profile = () => {
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
             />
-            <button onClick={handleEdit}>Save</button>
-            <button onClick={() => setEditing(false)}>Cancel</button>
+            <button className="edit-btn" onClick={handleEdit}>
+              Save
+            </button>
+            <button className="edit-btn" onClick={() => setEditing(false)}>
+              Cancel
+            </button>
           </div>
         ) : (
           <div>
             <p>Name: {userInfo.name}</p>
             <p>Email: {userInfo.email}</p>
-            <button onClick={() => setEditing(true)}>Edit Info</button>
+            <div className="edit-btn-container">
+              <button onClick={() => setEditing(true)} className="edit-btn">
+                Edit Info
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -141,24 +181,6 @@ const Profile = () => {
           </ul>
         ) : (
           <p>No codes available.</p>
-        )}
-      </div>
-      <div className="profile-messages">
-        <h2>Your Messages</h2>
-        {messages.length > 0 ? (
-          <ul>
-            {messages.map((message) => (
-              <li key={message.id}>
-                <p>
-                  <strong>From:</strong> {message.sender_id},{" "}
-                  <strong>To:</strong> {message.receiver_id}
-                </p>
-                <p>{message.message}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No messages available.</p>
         )}
       </div>
       <div className="profile-change-password">
@@ -181,8 +203,16 @@ const Profile = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <button onClick={handleChangePassword}>Change Password</button>
+        {passwordMatchFlag && (
+          <p className="no-match">Passwords do not match</p>
+        )}
+        <div className="password-button">
+          <button onClick={handleChangePassword}>Change Password</button>
+        </div>
       </div>
+      <button className="logout-btn" onClick={logout}>
+        Logout
+      </button>
     </div>
   );
 };
