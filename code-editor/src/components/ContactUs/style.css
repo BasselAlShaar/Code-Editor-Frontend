@@ -28,14 +28,14 @@
 .Contact-Button {
   padding: 15px 30px;
     color: #fff;
-    background-color: #4facfe;
+    background-color: #1872c0;
     border: none;
     border-radius: 5px;
     font-size: 18px;
     text-decoration: none;
 }
 .Contact-Button:hover{
-    background-color: #248eeb;
+    background-color: #1872c0;
 }
 .Contact-Container {
   display: flex;
