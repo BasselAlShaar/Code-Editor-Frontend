@@ -1,0 +1,126 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.profile-container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.no-match{
+  color: red;
+}
+
+.profile-info {
+  border: 1px solid #ddd;
+  width: 40vw;
+  padding: 20px;
+  border-radius: 5px;
+}
+.profile-info p{
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.profile-info-inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.profile-info-inputs input {
+  width: 40%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.profile-codes {
+  border: 1px solid #ddd;
+  width: 100%;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.edit-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.profile-change-password {
+  width: 40vw;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.profile-info h2,
+.profile-codes h2,
+.profile-change-password h2 {
+  margin-top: 0;
+}
+
+.profile-codes ul {
+  list-style: none;
+  padding: 0;
+}
+
+.profile-codes li {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.profile-change-password label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.profile-change-password input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.password-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.profile-change-password button {
+  padding: 10px 20px;
+  width: 60%;
+  font-size: 12px;
+  background-color: #1872c0;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.profile-change-password button:hover {
+  background-color: #248eeb;
+}
+.logout-btn:hover {
+  background-color: #248eeb;
+}
+.edit-btn:hover {
+  background-color: #248eeb;
+}

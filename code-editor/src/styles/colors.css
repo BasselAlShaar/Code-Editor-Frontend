@@ -1,9 +1,9 @@
 .primary-bg{
-    background-color: #ff416c;
+    background-color: #248eeb;
 }
 
 .secondary-bg{
-    background-color: #d15e79;
+    background-color: #1872c0;
 }
 
 .white-bg{
@@ -15,11 +15,11 @@
 }
 
 .primary-text{
-    color: #ff416c;
+    color: #248eeb;
 }
 
 .secondary-text{
-    color:#d15e79;
+    color:#1872c0;
 }
 
 .white-text{
@@ -28,8 +28,4 @@
 
 .black-text{
     color: #000;
-}
-
-.nav-color{
-    background-color: #f44336;
 }

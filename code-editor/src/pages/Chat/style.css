@@ -14,7 +14,7 @@
 
 .new-chat-btn {
   padding: 15px;
-  background-color: #4facfe;
+  background-color: #1872c0;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -58,7 +58,7 @@
 }
 
 .chat-header {
-  background-color: #4facfe;
+  background-color: #1872c0;
   color: #fff;
   padding: 15px;
   font-size: 18px;
@@ -128,7 +128,7 @@
 
 .chat-input button {
   padding: 10px 20px;
-  background-color: #4facfe;
+  background-color: #1872c0;
   color: #fff;
   border: none;
   margin-left: 10px;

@@ -1,3 +1,9 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .App {
     font-family: sans-serif;
     text-align: center;
@@ -12,7 +18,7 @@
   /* App.css */
 
   form > p{
-    color: red;
+    color: #1872c0;
   }
   .App{
     background: #f6f5f7;
@@ -144,9 +150,9 @@
   }
   
   .overlay {
-    background: #ff416c;
-    background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    background: #1872c0;
+    background: -webkit-linear-gradient(to right, #1872c0, #1872c0);
+    background: linear-gradient(to right, #1872c0, #1872c0);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;

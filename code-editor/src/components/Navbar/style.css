@@ -1,6 +1,6 @@
 .landing-header {
     padding: 20px;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
+    background: linear-gradient(to right, #1872c0, #248eeb);
     color: #fff;
 }
 
@@ -18,7 +18,7 @@
 
 .nav-links {
     list-style: none;
-    padding: 0px 10px;
+    padding: 0;
     display: flex;
     gap: 20px;
 }
