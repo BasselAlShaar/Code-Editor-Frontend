@@ -17,7 +17,6 @@ const CodeEditor = () => {
   const [selectedCode, setSelectedCode] = useState("");
   const [codeTitle, setCodeTitle] = useState("");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
 
   const togglePopup = () => {
     setIsPopupVisible(!isPopupVisible);
@@ -30,15 +29,14 @@ const CodeEditor = () => {
 
   const onSelect = (language) => {
     setLanguage(language);
-    setValue(CODE_SNIPPETS[language]);
+    setValue(CODE_SNIPPETS[language] || ""); // Default to empty string if no snippet is available
   };
 
   const saveHandler = async () => {
     const token = localStorage.getItem("user-token");
-    const userId = localStorage.getItem("user-id");
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/user/${userId}/code`, {
+      const response = await fetch("http://127.0.0.1:8000/api/codes", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -48,7 +46,6 @@ const CodeEditor = () => {
         body: JSON.stringify({
           content: value,
           title: codeTitle,
-          user_id: userId,
         }),
       });
 
@@ -59,12 +56,10 @@ const CodeEditor = () => {
       }
 
       const data = await response.json();
-
       if (response.ok) {
         setSavedCodes((prev) => [...prev, data.code]);
         togglePopup();
-        //setIsSaved(!isSaved);
-        window.location.reload();
+        // No need to reload the page, use the state to update UI
       } else {
         console.error("Error saving code:", data);
       }
@@ -74,15 +69,11 @@ const CodeEditor = () => {
   };
 
   useEffect(() => {
-    
-  }, [isSaved]);
-
-  useEffect(() => {
     const fetchSavedCodes = async () => {
+      const token = localStorage.getItem("user-token");
+
       try {
-        const token = localStorage.getItem("user-token");
-        const userId = localStorage.getItem("user-id");
-        const response = await fetch(`http://127.0.0.1:8000/api/user/${userId}/codes`, {
+        const response = await fetch("http://127.0.0.1:8000/api/codes", {
           method: "GET",
           headers: {
             Accept: "application/json",
@@ -93,7 +84,7 @@ const CodeEditor = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setSavedCodes(data.codes);
+          setSavedCodes(data.codes || []);
         } else {
           console.error("Error fetching saved codes:", response.statusText);
         }
@@ -104,7 +95,6 @@ const CodeEditor = () => {
 
     fetchSavedCodes();
   }, []);
-
 
   const downloadHandler = () => {
     const blob = new Blob([value], { type: "text/plain;charset=utf-8" });
@@ -128,7 +118,7 @@ const CodeEditor = () => {
       default:
         extension = "txt";
     }
-    FileSaver.saveAs(blob, `${codeTitle}.${extension}`);
+    FileSaver.saveAs(blob, `${codeTitle || "untitled"}.${extension}`);
   };
 
   return (
@@ -168,7 +158,7 @@ const CodeEditor = () => {
         </div>
 
         <div className="flex row wrap align-items">
-          <Select bgColor="#ff4b2b" textColor="#fff" placeholder="Select saved code" onChange={(e)=>{setSelectedCode(e.target.value)}}>
+          <Select bgColor="#ff4b2b" textColor="#fff" placeholder="Select saved code" onChange={(e) => setSelectedCode(e.target.value)}>
             {savedCodes.map((code) => (
               <option key={code.id} value={code.content}>
                 {code.title}
