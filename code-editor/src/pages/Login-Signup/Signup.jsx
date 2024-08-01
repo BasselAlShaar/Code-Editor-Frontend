@@ -112,7 +112,7 @@ const SignUpForm = () => {
           }}
         ></Input>
         {passwordMatchFlag && <p>Passwords do not match</p>}
-        <Button text="Sign in" onClick={handelSignup}></Button>
+        <Button text="Sign up" onClick={handelSignup}></Button>
         {emailFlag && <p>Invalid Email</p>}
         {isPopupVisible && (
           <Popup

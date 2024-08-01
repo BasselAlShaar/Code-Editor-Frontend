@@ -23,7 +23,7 @@ const Navbar = () => {
   return (
     <div className="landing-header">
       <nav className="navbar">
-        <div className="logo">Logo</div>
+        <div className="logo">CollabCode</div>
         <ul className="nav-links">
           <li>
             <Link to="/code">Code</Link>

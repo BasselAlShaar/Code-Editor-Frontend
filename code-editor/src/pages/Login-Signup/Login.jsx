@@ -71,7 +71,10 @@ const SignInForm = () => {
       }
       else if(data.status==="success"){
         localStorage.setItem("user-token",data.authorisation.token);
-        nav('/');
+        if(data.role==='admin')
+          nav("/admin")
+        else
+          nav('/');
       }
     }
   }
