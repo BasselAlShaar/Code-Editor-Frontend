@@ -88,11 +88,11 @@ const Profile = () => {
   };
 
   const handleEdit = async () => {
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.sub;
+    //const decodedToken = jwtDecode(token);
+    //const userId = decodedToken.sub;
     try {
       await axios.put(
-        `http://localhost:8000/api/users/${userId}`,
+        `http://localhost:8000/api/users`,
         { name: newName, email: newEmail },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -104,13 +104,11 @@ const Profile = () => {
   };
 
   const handleChangePassword = async () => {
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.sub;
     try {
       if (!passwordMatchFlag) {
         await axios.put(
-          `http://localhost:8000/api/users/password`,
-          newPassword,
+          `http://127.0.0.1:8000/api/users/password`,
+          {'password':newPassword},
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setCurrentPassword("");
