@@ -1,0 +1,120 @@
+/* ── Output ─────────────────────────────────────────────────── */
+ 
+.output-root {
+  width: 40%;
+}
+ 
+/* Run button — replaces Chakra Button variant="outline" colorScheme="green" */
+.output-run-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  margin-bottom: 16px;
+  background: transparent;
+  border: 1.5px solid var(--green);
+  border-radius: var(--r);
+  color: var(--green);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.1s;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+ 
+.output-run-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--green);
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+ 
+.output-run-btn:hover::before {
+  opacity: 0.08;
+}
+ 
+.output-run-btn:hover {
+  box-shadow: 0 0 18px rgba(52, 211, 153, 0.3);
+  transform: translateY(-1px);
+}
+ 
+.output-run-btn:active {
+  transform: translateY(0);
+}
+ 
+.output-run-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.3);
+}
+ 
+/* Loading spinner */
+.output-run-btn[data-loading="true"] {
+  opacity: 0.7;
+  cursor: wait;
+  pointer-events: none;
+}
+ 
+/* Output console box */
+.output-console {
+  height: 75vh;
+  padding: 12px;
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  background: #0a0716;
+  overflow-y: auto;
+  font-family: var(--font-code);
+  font-size: 13px;
+  line-height: 1.7;
+  transition: border-color 0.2s;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+ 
+.output-console::-webkit-scrollbar {
+  width: 5px;
+}
+.output-console::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+ 
+.output-console--normal {
+  color: #c8d3f5;
+  border-color: var(--border);
+}
+ 
+.output-console--error {
+  color: var(--red);
+  border-color: rgba(248, 113, 113, 0.35);
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.1) inset;
+}
+ 
+/* Each output line */
+.output-line {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+ 
+/* Empty prompt */
+.output-empty {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+ 
+.output-empty::before {
+  content: '›';
+  font-size: 18px;
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+ 

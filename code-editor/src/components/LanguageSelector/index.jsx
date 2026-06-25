@@ -7,29 +7,29 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { LANGUAGE_VERSIONS } from "../../pages/CodePage/constants";
-
-const languages = Object.entries(LANGUAGE_VERSIONS);
+import { LANGUAGE_IDS } from "../../pages/CodePage/constants.js";
+import "./style.css";
+ 
+const languages = Object.keys(LANGUAGE_IDS);
 const ACTIVE_COLOR = "blue.400";
-
+ 
 const LanguageSelector = ({ language, onSelect }) => {
   return (
-    <Box ml={2} mb={4} position="relative">
-      <Text mb={2} fontSize="lg" color={'white'}>
-      </Text>
+    <Box ml={2} mb={4} position="relative" className="lang-selector-wrap">
       <Menu isLazy>
         <MenuButton as={Button} position="relative" zIndex={1}>
           {language}
         </MenuButton>
+ 
         <MenuList
           bg="#110c1b"
-          zIndex={1000} // Ensure it appears above other content
+          zIndex={1000}
           position="absolute"
-          top="100%" // Position right below the MenuButton
-          left={0} // Align with the left edge of MenuButton
-          mt={1} // Optional margin to create space between the button and the menu
+          top="100%"
+          left={0}
+          mt={1}
         >
-          {languages.map(([lang, version]) => (
+          {languages.map((lang) => (
             <MenuItem
               key={lang}
               color={lang === language ? ACTIVE_COLOR : ""}
@@ -41,10 +41,6 @@ const LanguageSelector = ({ language, onSelect }) => {
               onClick={() => onSelect(lang)}
             >
               {lang}
-              &nbsp;
-              <Text as="span" color="gray.600" fontSize="sm">
-                ({version})
-              </Text>
             </MenuItem>
           ))}
         </MenuList>
@@ -52,5 +48,6 @@ const LanguageSelector = ({ language, onSelect }) => {
     </Box>
   );
 };
-
+ 
 export default LanguageSelector;
+ 

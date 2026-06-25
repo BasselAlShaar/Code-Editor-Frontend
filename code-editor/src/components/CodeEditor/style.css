@@ -1,0 +1,107 @@
+/* ── CodeEditor ─────────────────────────────────────────────── */
+ 
+/* Layout shell — fills the Box from CodePage */
+.code-editor-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 0;
+}
+ 
+/* Top split: editor + output */
+.code-editor-split {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  padding-bottom: 16px;
+}
+ 
+/* Editor column */
+.code-editor-left {
+  padding-left: 5px;
+  width: 41vw;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+ 
+/* Monaco wrapper — subtle border + glow on focus-within */
+.code-editor-monaco-wrap {
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 0 0 var(--accent-glow);
+}
+ 
+.code-editor-monaco-wrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+ 
+/* Bottom action bar */
+.code-editor-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 20px;
+  padding-top: 8px;
+}
+ 
+.code-editor-actions-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+ 
+.code-editor-actions-center {
+  display: flex;
+  align-items: center;
+}
+ 
+/* Saved code select — override Chakra Select */
+.code-editor-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r) !important;
+  color: var(--text) !important;
+  font-family: var(--font-ui) !important;
+  font-size: 13px !important;
+  padding: 8px 14px !important;
+  cursor: pointer;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  outline: none;
+  min-width: 200px;
+}
+ 
+.code-editor-select:hover {
+  border-color: var(--border-hover) !important;
+}
+ 
+.code-editor-select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow) !important;
+}
+ 
+.code-editor-select option {
+  background: var(--surface-2);
+  color: var(--text);
+}
+ 
+/* Popup positioning */
+.code-editor-popup {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+ 

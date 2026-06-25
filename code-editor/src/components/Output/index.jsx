@@ -1,58 +1,62 @@
 import { useState } from "react";
-import { Box, Button, Text, useToast } from "@chakra-ui/react";
-import { executeCode } from "../../pages/CodePage/api";
-
+import { Box, Text } from "@chakra-ui/react";
+import { executeCode } from "../../pages/CodePage/api.js";
+import "./style.css";
+ 
 const Output = ({ editorRef, language }) => {
-  const toast = useToast();
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-
+ 
   const runCode = async () => {
     const sourceCode = editorRef.current.getValue();
     if (!sourceCode) return;
+ 
     try {
       setIsLoading(true);
-      const { run: result } = await executeCode(language, sourceCode);
-      setOutput(result.output.split("\n"));
-      result.stderr ? setIsError(true) : setIsError(false);
+ 
+      const result = await executeCode(language, sourceCode);
+ 
+      const finalOutput =
+        result.stdout ||
+        result.stderr ||
+        result.compile_output ||
+        "No output";
+ 
+      setOutput(finalOutput.split("\n"));
+      setIsError(!!result.stderr);
     } catch (error) {
       console.log(error);
-      toast({
-        title: "An error occurred.",
-        description: error.message || "Unable to run code",
-        status: "error",
-        duration: 6000,
-      });
     } finally {
       setIsLoading(false);
     }
   };
-
+ 
   return (
-    <Box w="40%" height={'80vh'} >
-      <Button
-        variant="outline"
-        colorScheme="green"
-        mb={4}
-        isLoading={isLoading}
+    <Box w="40%" height={"80vh"}>
+      <button
+        className="output-run-btn"
+        data-loading={isLoading}
+        disabled={isLoading}
         onClick={runCode}
       >
-        Run Code
-      </Button>
-      <Box
-        height={'75vh'}
-        p={2}
-        color={isError ? "red.400" : ""}
-        border="1px solid"
-        borderRadius={4}
-        borderColor={isError ? "red.500" : "#333"}
+        {isLoading ? "Running…" : "Run Code"}
+      </button>
+ 
+      <div
+        className={`output-console ${isError ? "output-console--error" : "output-console--normal"}`}
       >
-        {output
-          ? output.map((line, i) => <Text color={"white"} key={i}>{line}</Text>)
-          : <Text color={"white"}>Click "Run Code" to see the output here</Text>}
-      </Box>
+        {output ? (
+          output.map((line, i) => (
+            <span key={i} className="output-line">{line}</span>
+          ))
+        ) : (
+          <span className="output-empty">Click "Run Code" to see the output here</span>
+        )}
+      </div>
     </Box>
   );
 };
+ 
 export default Output;
+ 

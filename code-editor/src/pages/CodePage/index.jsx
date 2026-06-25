@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import CodeEditor from "../../components/CodeEditor";
-import './style.css'
-
+import "./style.css";
+ 
 function CodePage() {
   return (
     <Box
@@ -15,5 +15,5 @@ function CodePage() {
     </Box>
   );
 }
-
+ 
 export default CodePage;

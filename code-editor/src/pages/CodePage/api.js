@@ -1,19 +1,18 @@
 import axios from "axios";
-import { LANGUAGE_VERSIONS } from "./constants";
+import { LANGUAGE_IDS } from "./constants";
 
 const API = axios.create({
-  baseURL: "https://emkc.org/api/v2/piston",
+  baseURL: "https://ce.judge0.com",
 });
 
 export const executeCode = async (language, sourceCode) => {
-  const response = await API.post("/execute", {
-    language: language,
-    version: LANGUAGE_VERSIONS[language],
-    files: [
-      {
-        content: sourceCode,
-      },
-    ],
-  });
+  const response = await API.post(
+    "/submissions?base64_encoded=false&wait=true",
+    {
+      source_code: sourceCode,
+      language_id: LANGUAGE_IDS[language],
+    }
+  );
+
   return response.data;
 };
