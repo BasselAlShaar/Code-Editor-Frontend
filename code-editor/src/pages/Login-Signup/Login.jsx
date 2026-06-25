@@ -1,100 +1,67 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import './style.css'
+import React, { useEffect, useState } from "react";
+import './style.css';
 import Input from "../../base/Input";
-import Button from "../../base/Button";
-import Socials from "../../components/Socials"
-import Popup from "../../base/Popup";
 import { useNavigate } from "react-router-dom";
-const SignInForm = () => {
 
+const SignInForm = ({ onSwitchToSignup }) => {
   const nav = useNavigate();
+  const [email, setEmail]       = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError]       = useState('');
+  const [emailFlag, setEmailFlag] = useState(false);
 
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-
-  const togglePopup = () => {
-    setIsPopupVisible(!isPopupVisible);
-  };
-
-  const [isEmptyFieldsPopup, setEmptyFieldsPopup] = useState(false);
-
-  const toggleEmptyFieldsPopup = () => {
-    setEmptyFieldsPopup(!isEmptyFieldsPopup);
-  };
-
-
-  const [password,setPassword]=useState('');
-
-
-  const [email,setEmail] = useState('');
-  const [emailFlag,setEmailFlag]=useState(false);
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const validateEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
   useEffect(() => {
     setEmailFlag(email !== '' && !validateEmail(email));
   }, [email]);
 
-  /* 
-  const validatePassword = () => {
-    // Minimum 8 characters, at least one letter, one number and one special character
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-    return passwordRegex.test(password);
-  };*/
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (!email || !password) { setError('All fields are required.'); return; }
 
-  const handleLogin = async (e)=>{
-      e.preventDefault();
-      if(email===''||password===''){
-        toggleEmptyFieldsPopup();
-      }
-      else {
-      const URL = 'http://127.0.0.1:8000/api/login';
-      const response = await fetch(URL, {
-        method: 'POST', 
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
+    const response = await fetch('http://127.0.0.1:8000/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await response.json();
 
-      const data = await response.json();
-      console.log(data);
-      //console.log(data.authorisation.token);
-      if(data.message==="Invalid email or password."){
-        togglePopup();
-      }
-      else if(data.status==="success"){
-        localStorage.setItem("user-token",data.authorisation.token);
-        if(data.role==='admin')
-          nav("/admin")
-        else
-          nav('/');
-      }
+    if (data.message === "Invalid email or password.") {
+      setError('Invalid email or password.');
+    } else if (data.status === "success") {
+      localStorage.setItem("user-token", data.authorisation.token);
+      nav(data.role === 'admin' ? "/admin" : '/');
     }
-  }
+  };
 
   return (
-    <div className="form-container sign-in-container">
-      <form>
-        <h1>Sign in</h1>
-        <Socials></Socials>
-        <span>or use your account</span>
-        <Input className='login-input' placeHolder='Email' type='text' onTextChange={(e) => {setEmail(e.target.value)}}></Input>
-        <Input className='login-input' placeHolder='Password' type='password' onTextChange={(e)=>{setPassword(e.target.value)}}></Input>
-        <a href="#">Forgot your password?</a>
-        <Button text='Sign in' onClick={handleLogin}></Button>
-        {emailFlag && <p>Invalid Email</p>}
-        {isPopupVisible && <Popup caution={'Careful!!'} message='Wrong email or password' onClose={()=>{setIsPopupVisible(false)}}></Popup>}
-        {isEmptyFieldsPopup && <Popup caution={'Careful!!'} message='Can not have empty fields' onClose={()=>{setEmptyFieldsPopup(false)}}></Popup>}
-      </form>
+    <div className="auth-panel">
+      <div>
+        <h1 className="auth-panel-title">Welcome back</h1>
+        <p className="auth-panel-sub">Sign in to your CollabCode account</p>
+      </div>
+
+      <div className="auth-panel-body">
+        <Input placeHolder="Email address" type="text"     onTextChange={(e) => setEmail(e.target.value)} />
+        <Input placeHolder="Password"      type="password" onTextChange={(e) => setPassword(e.target.value)} />
+        <button className="auth-forgot">Forgot password?</button>
+      </div>
+
+      {(error || emailFlag) && (
+        <p className="auth-error">{error || 'Enter a valid email address.'}</p>
+      )}
+
+      <div className="auth-panel-actions">
+        <button className="auth-submit-btn" onClick={handleLogin}>Sign in</button>
+        <p className="auth-switch-text">
+          No account?
+          <button className="auth-switch-link" onClick={onSwitchToSignup}>Create one</button>
+        </p>
+      </div>
     </div>
   );
-}
+};
 
 export default SignInForm;

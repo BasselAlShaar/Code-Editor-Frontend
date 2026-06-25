@@ -1,13 +1,13 @@
 import React from 'react';
-import './style.css'; // Optional: Add your styles for the popup
+import './style.css';
 
 const Popup = ({ message, onClose, caution }) => {
   return (
-    <div className="popup-overlay">
-      <div className="popup-content">
-        <h2>{caution}</h2>
-        <p>{message}</p>
-        <button onClick={onClose}>Close</button>
+    <div className="popup-overlay" onClick={onClose}>
+      <div className="popup-box" onClick={(e) => e.stopPropagation()}>
+        {caution && <span className="popup-caution">{caution}</span>}
+        <p className="popup-message">{message}</p>
+        <button className="popup-close" onClick={onClose}>Dismiss</button>
       </div>
     </div>
   );

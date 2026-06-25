@@ -1,88 +1,241 @@
-/* src/LandingPage.css */
-
-body {
-    margin: 0;
-    display: block;
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-}
-
 .landing-page {
-    text-align: center;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
 }
 
-.login-btn {
-    padding: 10px 20px;
-    color: #fff;
-    background-color: #1872c0;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
+/* ── Hero ────────────────────────────────────────────────────── */
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.header-content {
-    margin-top: 50px;
+/* Subtle grid bg */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.18;
+  pointer-events: none;
 }
 
-.header-content h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
+/* Radial glow */
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(88, 166, 255, 0.08) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  pointer-events: none;
 }
 
-.header-content p {
-    font-size: 24px;
-    margin-bottom: 40px;
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-family: var(--font-code);
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
 }
 
-.signup-btn {
-
-    padding: 15px 30px;
-    color: #fff;
-    background-color: #1872c0;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    text-decoration: none;
+.hero-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s ease infinite;
 }
 
-.signup-btn:hover{
-    background-color: #1872c0;
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(63, 185, 80, 0.6); }
+  50%       { box-shadow: 0 0 0 5px rgba(63, 185, 80, 0); }
 }
 
+.hero-title {
+  font-size: clamp(36px, 6vw, 62px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-title-accent {
+  color: var(--accent);
+  font-family: var(--font-code);
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: var(--text-dim);
+  max-width: 480px;
+  line-height: 1.65;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-hero-primary {
+  padding: 10px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity var(--t), transform 80ms ease;
+}
+.btn-hero-primary:hover { opacity: 0.88; }
+.btn-hero-primary:active { transform: scale(0.97); }
+
+.btn-hero-ghost {
+  padding: 10px 24px;
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-ui);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--t), border-color var(--t), background var(--t);
+}
+.btn-hero-ghost:hover {
+  color: var(--text);
+  border-color: var(--border-hover);
+  background: var(--surface-2);
+}
+
+/* ── Features ────────────────────────────────────────────────── */
 .features-section {
-    padding: 50px 20px;
-    background: #fff;
-    color: #333;
+  padding: 72px 24px;
+  border-top: 1px solid var(--border);
 }
 
-.features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+.section-label {
+  font-family: var(--font-code);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 12px;
 }
 
-.feature {
-    background: #f7f7f7;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
+.section-title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 48px;
 }
 
-.developers-section,
-.contact-section {
-    padding: 50px 20px;
-    background: #f0f2f5;
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1px;
+  max-width: 960px;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
 }
 
+.feature-card {
+  background: var(--surface);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: background var(--t);
+}
+.feature-card:hover { background: var(--surface-2); }
+
+.feature-icon {
+  font-family: var(--font-code);
+  font-size: 18px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.feature-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.feature-card p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ── Developers Section ──────────────────────────────────────── */
+.developers-section {
+  padding: 72px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+.developers-section h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.developers-section p {
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
 .landing-footer {
-    background: #1872c0;
-    padding: 10px 20px;
-    color: #fff;
+  border-top: 1px solid var(--border);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .landing-footer p {
-    margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
 }

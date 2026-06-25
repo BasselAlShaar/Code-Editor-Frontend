@@ -1,17 +1,15 @@
 import React from "react";
 import "./style.css";
 
-const ContactUs = () => {
-  return (
-    <div className="Contact-Container">
-      <form className="Contact-Form">
-        <h2>Contact Us</h2>
-        <input placeHolder="email" type="email" className="Contact-Email" />
-        <textarea placeholder="message" name="" className="Contact-Text" />
-        <button className="Contact-Button">Submit</button>
-      </form>
-    </div>
-  );
-};
+const ContactUs = () => (
+  <section className="contact-section">
+    <h2 className="contact-title">Get in touch</h2>
+    <form className="contact-form">
+      <input className="contact-input" placeholder="Email address" type="email" />
+      <textarea className="contact-textarea" placeholder="Your message…" />
+      <button className="contact-submit-btn" type="submit">Send message</button>
+    </form>
+  </section>
+);
 
 export default ContactUs;

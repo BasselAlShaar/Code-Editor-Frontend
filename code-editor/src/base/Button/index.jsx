@@ -1,16 +1,16 @@
 import React from 'react';
-import "./style.css"
-import '../../styles/colors.css'
-import '../../styles/utilities.css'
-const Button = ({text,bgColor,textColor,onClick})=>{
+import './style.css';
 
-    return(
-        <button 
-        onClick={onClick}
-        className={`flex center rounded clickable ${bgColor} ${textColor} bold  button`}>
-        {text}
-        </button>
-    )
-}
+const Button = ({ text, onClick, variant = 'primary', disabled, children }) => {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`btn btn-${variant}`}
+    >
+      {text || children}
+    </button>
+  );
+};
 
 export default Button;

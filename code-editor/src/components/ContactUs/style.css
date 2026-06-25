@@ -1,48 +1,64 @@
-* {
-  margin: 0;
-  padding: 0;
+.contact-section {
+  padding: 72px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
 }
 
-.Contact-Form {
-    background-color: #eee;
-    border-radius: 10px;
-    padding: 20px;
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.contact-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
 }
-.Contact-Email {
-  width: 300px;
-  padding: 10px;
-  border-radius: 10px;
-}
-.Contact-Text {
-  width: 300px;
-  padding: 10px;
-  border-radius: 10px;
-  resize: none;
-  height: 200px;
-}
-.Contact-Button {
-  padding: 15px 30px;
-    color: #fff;
-    background-color: #1872c0;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    text-decoration: none;
-}
-.Contact-Button:hover{
-    background-color: #1872c0;
-}
-.Contact-Container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
+.contact-form {
   width: 100%;
-  padding: 10px;
-  background-color: white;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
+
+.contact-input,
+.contact-textarea {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  padding: 9px 12px;
+  width: 100%;
+  outline: none;
+  transition: border-color var(--t), box-shadow var(--t);
+}
+.contact-input::placeholder,
+.contact-textarea::placeholder { color: var(--text-muted); }
+.contact-input:focus,
+.contact-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.contact-textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: var(--font-ui);
+}
+
+.contact-submit-btn {
+  padding: 9px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  transition: opacity var(--t);
+}
+.contact-submit-btn:hover { opacity: 0.88; }

@@ -1,31 +1,76 @@
+.user-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.user-table-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
 .user-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
 }
 
-.user-table h2 {
-    margin-bottom: 20px;
+.user-table th {
+  padding: 10px 14px;
+  text-align: left;
+  font-family: var(--font-code);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
 }
 
-.user-table table {
-    width: 100%;
-    border: 1px solid #ccc;
+.user-table td {
+  padding: 11px 14px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
 }
 
-.user-table th, .user-table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ccc;
+.user-table tr:last-child td { border-bottom: none; }
+.user-table tr:hover td { background: var(--surface-2); }
+
+.user-table-delete-btn {
+  padding: 4px 10px;
+  background: transparent;
+  color: var(--red);
+  border: 1px solid rgba(248, 81, 73, 0.35);
+  border-radius: var(--r);
+  font-size: 12px;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  transition: background var(--t), border-color var(--t);
+}
+.user-table-delete-btn:hover {
+  background: var(--red-dim);
+  border-color: var(--red);
 }
 
-.user-table button {
-    padding: 5px 10px;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    background-color: #1872c0;
+.user-role-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: var(--font-code);
+  font-weight: 500;
 }
 
-.user-table button:hover {
-    background-color: #248eeb;
+.user-role-badge.admin {
+  background: rgba(88, 166, 255, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+}
+
+.user-role-badge.user {
+  background: var(--surface-2);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
 }

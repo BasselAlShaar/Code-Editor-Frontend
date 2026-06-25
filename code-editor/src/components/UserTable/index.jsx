@@ -6,19 +6,15 @@ const UserTable = () => {
   const [users, setUsers] = useState([]);
   const token = localStorage.getItem("user-token");
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  useEffect(() => { fetchUsers(); }, []);
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/admin/users", {
+      const res = await axios.get("http://localhost:8000/api/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setUsers(response.data.users);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
+      setUsers(res.data.users);
+    } catch {}
   };
 
   const deleteUser = async (id) => {
@@ -26,16 +22,13 @@ const UserTable = () => {
       await axios.delete(`http://localhost:8000/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setUsers(users.filter((user) => user.id !== id));
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
+      setUsers(users.filter((u) => u.id !== id));
+    } catch {}
   };
 
   return (
-    <div className="user-table">
-      <h2>Manage Users</h2>
-      <table>
+    <div className="user-table-wrap">
+      <table className="user-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -49,9 +42,16 @@ const UserTable = () => {
             <tr key={user.email}>
               <td>{user.name}</td>
               <td>{user.email}</td>
-              <td>{user.role}</td>
               <td>
-                <button onClick={() => deleteUser(user.id)}>Delete</button>
+                <span className={`user-role-badge ${user.role}`}>{user.role}</span>
+              </td>
+              <td>
+                <button
+                  className="user-table-delete-btn"
+                  onClick={() => deleteUser(user.id)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

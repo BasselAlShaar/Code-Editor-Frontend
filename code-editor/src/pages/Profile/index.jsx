@@ -3,93 +3,61 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import "./style.css";
+import Navbar from "../../components/Navbar";
 
 const Profile = () => {
-  const [userInfo, setUserInfo] = useState({ id: null, name: "", email: "" });
-  const [codes, setCodes] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newEmail, setNewEmail] = useState("");
+  const [userInfo, setUserInfo]       = useState({ id: null, name: "", email: "" });
+  const [codes, setCodes]             = useState([]);
+  const [newName, setNewName]         = useState("");
+  const [newEmail, setNewEmail]       = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [editing, setEditing] = useState(false);
-  const [passwordMatchFlag, setPasswordMatchFlag] = useState(true);
+  const [editing, setEditing]         = useState(false);
+  const [passwordMatchFlag, setPasswordMatchFlag] = useState(false);
 
-  const token = localStorage.getItem("user-token");
-
+  const token    = localStorage.getItem("user-token");
   const navigate = useNavigate();
-
-  const matchPassword = (newPassword, confirmPassword) => {
-    return newPassword === confirmPassword;
-  };
 
   useEffect(() => {
     setPasswordMatchFlag(
-      newPassword !== "" &&
-        confirmPassword !== "" &&
-        !matchPassword(newPassword, confirmPassword)
+      newPassword !== "" && confirmPassword !== "" && newPassword !== confirmPassword
     );
   }, [newPassword, confirmPassword]);
 
   useEffect(() => {
     if (token) {
-      const decodedToken = jwtDecode(token);
-      const userId = decodedToken.sub; // Assuming 'sub' contains the user ID
+      const userId = jwtDecode(token).sub;
       fetchUserInfo(userId);
     }
   }, [token]);
 
   useEffect(() => {
-    if (userInfo.id) {
-      fetchUserCodes();
-      fetchUserMessages();
-    }
+    if (userInfo.id) fetchUserCodes();
   }, [userInfo.id]);
 
   const fetchUserInfo = async (userId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/users/${userId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setUserInfo(response.data.user);
-      setNewName(response.data.user.name);
-      setNewEmail(response.data.user.email);
-    } catch (error) {
-      console.error("Error fetching user info:", error);
-    }
+      const res = await axios.get(`http://localhost:8000/api/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUserInfo(res.data.user);
+      setNewName(res.data.user.name);
+      setNewEmail(res.data.user.email);
+    } catch {}
   };
 
   const fetchUserCodes = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/codes", {
+      const res = await axios.get("http://localhost:8000/api/codes", {
         headers: { Authorization: `Bearer ${token}` },
         params: { user_id: userInfo.id },
       });
-      setCodes(response.data.codes);
-    } catch (error) {
-      console.error("Error fetching user codes:", error);
-    }
-  };
-
-  const fetchUserMessages = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/api/messages", {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { user_id: userInfo.id },
-      });
-      setMessages(response.data.messages);
-    } catch (error) {
-      console.error("Error fetching user messages:", error);
-    }
+      setCodes(res.data.codes);
+    } catch {}
   };
 
   const handleEdit = async () => {
-    //const decodedToken = jwtDecode(token);
-    //const userId = decodedToken.sub;
     try {
       await axios.put(
         `http://localhost:8000/api/users`,
@@ -98,29 +66,19 @@ const Profile = () => {
       );
       setUserInfo({ ...userInfo, name: newName, email: newEmail });
       setEditing(false);
-    } catch (error) {
-      console.error("Error updating user info:", error);
-    }
+    } catch {}
   };
 
   const handleChangePassword = async () => {
+    if (passwordMatchFlag) return;
     try {
-      if (!passwordMatchFlag) {
-        await axios.put(
-          `http://127.0.0.1:8000/api/users/password`,
-          {'password':newPassword},
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-      }
-      else { 
-        console.log("no match")
-      }
-    } catch (error) {
-      console.error("Error changing password:", error);
-    }
+      await axios.put(
+        `http://127.0.0.1:8000/api/users/password`,
+        { password: newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setCurrentPassword(""); setNewPassword(""); setConfirmPassword("");
+    } catch {}
   };
 
   const logout = () => {
@@ -129,89 +87,97 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
-      <h1>Profile Page</h1>
-      <div className="profile-info">
-        <h2>User Information</h2>
-        {editing ? (
-          <div className="profile-info-inputs">
-            <label>Name:</label>
-            <input
-              type="text"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-            />
-            <label>Email:</label>
-            <input
-              type="email"
-              value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}
-            />
-            <button className="edit-btn" onClick={handleEdit}>
-              Save
-            </button>
-            <button className="edit-btn" onClick={() => setEditing(false)}>
-              Cancel
-            </button>
+    <>
+      <Navbar />
+      <div className="profile-page">
+        <div className="profile-layout">
+          <h1 className="profile-page-title">Account</h1>
+
+          {/* User info */}
+          <div className="profile-section">
+            <p className="profile-section-title">// profile</p>
+
+            {editing ? (
+              <div className="profile-input-group">
+                <div>
+                  <span className="profile-input-label">Name</span>
+                  <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Name" />
+                </div>
+                <div>
+                  <span className="profile-input-label">Email</span>
+                  <input type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} placeholder="Email" />
+                </div>
+                <div className="profile-btn-row">
+                  <button className="btn btn-primary" style={{ fontSize: 12, padding: '6px 14px' }} onClick={handleEdit}>Save changes</button>
+                  <button className="btn btn-ghost"   style={{ fontSize: 12, padding: '6px 14px' }} onClick={() => setEditing(false)}>Cancel</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="profile-field-row">
+                  <span className="profile-field-label">Name</span>
+                  <div className="profile-field-value">{userInfo.name}</div>
+                </div>
+                <div className="profile-field-row">
+                  <span className="profile-field-label">Email</span>
+                  <div className="profile-field-value">{userInfo.email}</div>
+                </div>
+                <button className="btn btn-ghost" style={{ fontSize: 12, padding: '6px 14px', alignSelf: 'flex-start' }} onClick={() => setEditing(true)}>
+                  Edit info
+                </button>
+              </>
+            )}
           </div>
-        ) : (
-          <div>
-            <p>Name: {userInfo.name}</p>
-            <p>Email: {userInfo.email}</p>
-            <div className="edit-btn-container">
-              <button onClick={() => setEditing(true)} className="edit-btn">
-                Edit Info
+
+          {/* Saved codes */}
+          <div className="profile-section">
+            <p className="profile-section-title">// saved snippets</p>
+            {codes.length > 0 ? (
+              <ul className="profile-codes-list">
+                {codes.map((code) => (
+                  <li className="profile-code-item" key={code.id}>
+                    <div className="profile-code-title">{code.title}</div>
+                    <pre className="profile-code-snippet">{code.content}</pre>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="profile-empty">No snippets saved yet.</p>
+            )}
+          </div>
+
+          {/* Password */}
+          <div className="profile-section">
+            <p className="profile-section-title">// change password</p>
+            <div className="profile-input-group">
+              <div>
+                <span className="profile-input-label">Current password</span>
+                <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+              </div>
+              <div>
+                <span className="profile-input-label">New password</span>
+                <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              </div>
+              <div>
+                <span className="profile-input-label">Confirm new password</span>
+                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+              </div>
+              {passwordMatchFlag && <p className="profile-error">// passwords do not match</p>}
+              <button
+                className="btn btn-ghost"
+                style={{ fontSize: 12, padding: '6px 14px', alignSelf: 'flex-start' }}
+                onClick={handleChangePassword}
+                disabled={passwordMatchFlag}
+              >
+                Update password
               </button>
             </div>
           </div>
-        )}
-      </div>
-      <div className="profile-codes">
-        <h2>Your Codes</h2>
-        {codes.length > 0 ? (
-          <ul>
-            {codes.map((code) => (
-              <li key={code.id}>
-                <h3>{code.title}</h3>
-                <p>{code.content}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No codes available.</p>
-        )}
-      </div>
-      <div className="profile-change-password">
-        <h2>Change Password</h2>
-        <label>Current Password:</label>
-        <input
-          type="password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-        />
-        <label>New Password:</label>
-        <input
-          type="password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-        <label>Confirm New Password:</label>
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        {passwordMatchFlag && (
-          <p className="no-match">Passwords do not match</p>
-        )}
-        <div className="password-button">
-          <button onClick={handleChangePassword}>Change Password</button>
+
+          <button className="profile-logout-btn" onClick={logout}>Sign out</button>
         </div>
       </div>
-      <button className="logout-btn" onClick={logout}>
-        Logout
-      </button>
-    </div>
+    </>
   );
 };
 

@@ -1,107 +1,184 @@
-/* ── CodeEditor ─────────────────────────────────────────────── */
- 
-/* Layout shell — fills the Box from CodePage */
 .code-editor-root {
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
-  gap: 0;
-}
- 
-/* Top split: editor + output */
-.code-editor-split {
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  padding-bottom: 16px;
-}
- 
-/* Editor column */
-.code-editor-left {
-  padding-left: 5px;
-  width: 41vw;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
- 
-/* Monaco wrapper — subtle border + glow on focus-within */
-.code-editor-monaco-wrap {
-  border-radius: var(--r);
   overflow: hidden;
-  border: 1px solid var(--border);
-  transition: border-color 0.2s, box-shadow 0.2s;
-  box-shadow: 0 0 0 0 var(--accent-glow);
 }
- 
-.code-editor-monaco-wrap:focus-within {
+
+/* ── Toolbar (top row) ─────────────────────────────────────────── */
+.code-editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.code-editor-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.code-editor-toolbar-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.code-editor-spacer { flex: 1; }
+
+.code-name-input {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  font-family: var(--font-code);
+  font-size: 12px;
+  padding: 6px 12px;
+  outline: none;
+  width: 180px;
+  transition: border-color var(--t), box-shadow var(--t);
+}
+.code-name-input::placeholder { color: var(--text-muted); }
+.code-name-input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
- 
-/* Bottom action bar */
-.code-editor-actions {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding-bottom: 20px;
-  padding-top: 8px;
-}
- 
-.code-editor-actions-left {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
- 
-.code-editor-actions-center {
-  display: flex;
-  align-items: center;
-}
- 
-/* Saved code select — override Chakra Select */
-.code-editor-select {
+
+.code-select {
   appearance: none;
-  -webkit-appearance: none;
-  background: var(--surface-2) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: var(--r) !important;
-  color: var(--text) !important;
-  font-family: var(--font-ui) !important;
-  font-size: 13px !important;
-  padding: 8px 14px !important;
-  cursor: pointer;
-  transition: border-color 0.18s, box-shadow 0.18s;
-  outline: none;
-  min-width: 200px;
-}
- 
-.code-editor-select:hover {
-  border-color: var(--border-hover) !important;
-}
- 
-.code-editor-select:focus {
-  border-color: var(--accent) !important;
-  box-shadow: 0 0 0 3px var(--accent-glow) !important;
-}
- 
-.code-editor-select option {
   background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
   color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  padding: 6px 28px 6px 10px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--t);
+  min-width: 160px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b949e'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
 }
- 
-/* Popup positioning */
-.code-editor-popup {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
+.code-select:hover { border-color: var(--border-hover); }
+.code-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.code-select option { background: var(--surface-2); color: var(--text); }
+
+/* ── Split ─────────────────────────────────────────────────────── */
+.code-editor-split {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
 }
- 
+
+/* ── Editor side ──────────────────────────────────────────────── */
+.code-editor-left {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  border-right: 1px solid var(--border);
+}
+
+.code-editor-lang-bar {
+  padding: 0 16px;
+  height: 36px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.code-editor-monaco-wrap {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Output side ──────────────────────────────────────────────── */
+.code-editor-right {
+  width: 38%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.output-header {
+  padding: 0 16px;
+  height: 36px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.output-header-label {
+  font-family: var(--font-code);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.output-run-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  background: transparent;
+  border: 1.5px solid var(--green);
+  border-radius: var(--r);
+  color: var(--green);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t), box-shadow var(--t), transform 80ms ease;
+  outline: none;
+}
+.output-run-btn:hover {
+  background: var(--green-dim);
+  box-shadow: 0 0 14px rgba(63, 185, 80, 0.25);
+}
+.output-run-btn:active { transform: scale(0.96); }
+.output-run-btn:disabled { opacity: 0.45; cursor: wait; pointer-events: none; }
+
+.output-console {
+  flex: 1;
+  padding: 14px 16px;
+  background: #0a0f14;
+  overflow-y: auto;
+  font-family: var(--font-code);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.output-console--normal { color: #c8d3f5; }
+.output-console--error  { color: var(--red); }
+
+.output-line {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.output-empty {
+  color: var(--text-muted);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+}
+.output-empty::before { content: '›'; font-size: 16px; opacity: 0.4; }
